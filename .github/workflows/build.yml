@@ -86,8 +86,9 @@ jobs:
         cp $DESKTOP              ./
         cp /"$ICON"              ./
 
-        ln -s ./usr/share  ./share
-        ln -s ./shared/lib ./lib
+        ln -s ./usr/share        ./share
+        ln -s ./usr/resources    ./resources
+        ln -s ./shared/lib       ./lib
 
         # ADD LIBRARIES
         wget "$LIB4BN" -O ./lib4bin
@@ -103,6 +104,10 @@ jobs:
         chmod +x ./sharun
         ln ./sharun ./AppRun
         ./sharun -g
+
+        # Copy DRI
+        cp -r /lib/x86_64-linux-gnu/libxcb-dri3.so.0 ./shared/lib/ # Otherwise it will try to load it from the system
+        cp -r /usr/lib/x86_64-linux-gnu/dri ./shared/lib/ # May need environment variable LIBGL_DRIVERS_PATH at runtime since '\$${ORIGIN}' in RPATH is wrong?
 
         # MAKE APPIAMGE WITH FUSE3 COMPATIBLE APPIMAGETOOL
         cd ..
