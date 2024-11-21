@@ -115,4 +115,4 @@ jobs:
     - name: 5. Uploading artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: *.AppImage
+        path: '**/*.AppImage'
