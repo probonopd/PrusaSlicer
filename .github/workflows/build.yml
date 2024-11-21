@@ -13,7 +13,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y git build-essential autoconf cmake libglu1-mesa-dev libgtk-3-dev libdbus-1-dev libwebkit2gtk-4.0-dev desktop-file-utils
     - name: 1. Cloning the repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -23,14 +23,14 @@ jobs:
       run: echo dephash=$(git rev-parse HEAD:deps) >> $GITHUB_OUTPUT
     - name: Cache Dependencies
       id: cache-dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: deps/build/destdir
         key: dependencycache-${{ runner.os }}-${{ steps.dephash.outputs.dephash }}
     - name: Cache Download Files
       if: steps.cache-dependencies.outputs.cache-hit != 'true'
       id: cache-download
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: deps/download
         key: downloadcache-${{ runner.os }}-${{ github.run_id }}
@@ -108,6 +108,8 @@ jobs:
         # Copy DRI
         cp -r /lib/x86_64-linux-gnu/libxcb-dri3.so.0 ./shared/lib/ # Otherwise it will try to load it from the system
         cp -r /usr/lib/x86_64-linux-gnu/dri ./shared/lib/ # May need environment variable LIBGL_DRIVERS_PATH at runtime since '\$${ORIGIN}' in RPATH is wrong?
+
+        # Do we also need the __EGL_VENDOR_LIBRARY_DIRS environment variable?
 
         # MAKE APPIAMGE WITH FUSE3 COMPATIBLE APPIMAGETOOL
         cd ..
