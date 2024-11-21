@@ -92,7 +92,8 @@ jobs:
         # ADD LIBRARIES
         wget "$LIB4BN" -O ./lib4bin
         chmod +x ./lib4bin
-        xvfb-run -d -- ./lib4bin -p -v -r -e /usr/bin/PrusaSlicer
+        # xvfb-run -d -- ./lib4bin -p -v -r -e /usr/bin/PrusaSlicer
+        xvfb-run -- ./lib4bin -p -v -r -e /usr/bin/PrusaSlicer
         rm -f ./lib4bin
 
         find ./shared -type f -exec strip -s -R .comment --strip-unneeded {} ';'
