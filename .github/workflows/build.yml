@@ -62,6 +62,7 @@ jobs:
         find ../deps/build/destdir/usr/local
     - name: 4. Bundling
       run: |
+        set +x
         PACKAGE=PrusaSlicer
         DESKTOP=/usr/resources/applications/PrusaSlicer.desktop
         ICON=/usr/resources/icons/PrusaSlicer.png
