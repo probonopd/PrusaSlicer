@@ -110,8 +110,8 @@ jobs:
 
         # Copy DRI
         cp -r /lib/x86_64-linux-gnu/libxcb-dri3.so.0 ./shared/lib/ # Otherwise it will try to load it from the system
-        cp $(ldd ./lib/dri/*.so |cut -d ">" -f 2 | cut -d " " -f 2 | sort | uniq) shared/lib/ 2>/dev/null # FIXME: Deploy dependencies properly
         cp -r /usr/lib/x86_64-linux-gnu/dri ./shared/lib/ # May need environment variable LIBGL_DRIVERS_PATH at runtime since '\$${ORIGIN}' in RPATH is wrong?
+        cp $(ldd ./shared/lib/dri/*.so |cut -d ">" -f 2 | cut -d " " -f 2 | sort | uniq) ./shared/lib/ 2>/dev/null # FIXME: Deploy dependencies properly
 
         # Do we also need the __EGL_VENDOR_LIBRARY_DIRS environment variable?
 
