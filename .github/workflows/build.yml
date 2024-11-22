@@ -90,6 +90,16 @@ jobs:
         ln -s ./usr/resources    ./resources
         ln -s ./shared/lib       ./lib
 
+        # DEPLOY GDK # FIXME: Automate
+        echo "Deploying gdk..."
+        GDK_PATH="$(find /usr/lib -type d -regex ".*/gdk-pixbuf-2.0" -print -quit)"
+        cp -rv "$GDK_PATH" ./shared/lib
+        echo "Deploying gdk deps..."
+        find ./shared/lib/gdk-pixbuf-2.0 -type f -name '*.so*' -exec ldd {} \; \
+        	| awk -F"[> ]" '{print $4}' | xargs -I {} cp -vn {} ./shared/lib
+        find ./shared/lib -type f -regex '.*gdk.*loaders.cache' \
+        	-exec sed -i 's|/.*lib.*/gdk-pixbuf.*/.*/loaders/||g' {} \;
+
         # Copy WebKitNetworkProcess
         cp -r /usr/lib/x86_64-linux-gnu/webkit2gtk-4.0 ./shared/lib/
         # ADD LIBRARIES
@@ -105,8 +115,8 @@ jobs:
         # Copy DRI and glvnd
         cp -r /lib/x86_64-linux-gnu/libxcb-dri3.so.0 ./shared/lib/ # Otherwise it will try to load it from the system
         cp -r /usr/share/glvnd   ./usr/share/
-        # cp -r /usr/lib/x86_64-linux-gnu/dri ./shared/lib/ # May need environment variable LIBGL_DRIVERS_PATH at runtime since '\$${ORIGIN}' in RPATH is wrong?
-        # cp $(ldd ./shared/lib/dri/*.so |cut -d ">" -f 2 | cut -d " " -f 2 | sort | uniq) ./shared/lib/ 2>/dev/null # FIXME: Deploy dependencies properly
+        cp -r /usr/lib/x86_64-linux-gnu/dri ./shared/lib/ # May need environment variable LIBGL_DRIVERS_PATH at runtime since '\$${ORIGIN}' in RPATH is wrong?
+        cp $(ldd ./shared/lib/dri/*.so |cut -d ">" -f 2 | cut -d " " -f 2 | sort | uniq) ./shared/lib/ 2>/dev/null # FIXME: Deploy dependencies properly
 
         # Prepare sharun
         wget -c https://github.com/VHSgunzo/sharun/releases/download/v0.1.8/sharun-x86_64-upx -O ./sharun || true
