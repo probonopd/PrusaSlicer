@@ -62,7 +62,7 @@ jobs:
         find ../deps/build/destdir/usr/local
     - name: 4. Bundling
       run: |
-        set +x
+        set -x
         PACKAGE=PrusaSlicer
         DESKTOP=/usr/resources/applications/PrusaSlicer.desktop
         ICON=/usr/resources/icons/PrusaSlicer.png
@@ -123,7 +123,7 @@ jobs:
         wget -c https://github.com/VHSgunzo/sharun/releases/download/v0.1.8/sharun-x86_64-upx -O ./sharun || true
         chmod +x ./sharun
         ln ./sharun ./AppRun
-        ./sharun -g
+        ./sharun -g || true # FIXME
 
         # Do we also need the __EGL_VENDOR_LIBRARY_DIRS environment variable?
 
