@@ -110,7 +110,7 @@ jobs:
         # xvfb-run -- ./lib4bin -p -v -r -e /lib/webkit2gtk-4.0/WebKitNetworkProcess # FIXME: xvfb-run: error: Xvfb failed to start
         rm -f ./lib4bin
 
-        find ./shared -type f -exec strip -s -R .comment --strip-unneeded {} ';'
+        # find ./shared -type f -exec strip -s -R .comment --strip-unneeded {} ';'
 
         # Copy DRI and glvnd
         cp -r /lib/x86_64-linux-gnu/libxcb-dri3.so.0 ./shared/lib/ # Otherwise it will try to load it from the system
