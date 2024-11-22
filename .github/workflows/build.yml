@@ -90,11 +90,14 @@ jobs:
         ln -s ./usr/resources    ./resources
         ln -s ./shared/lib       ./lib
 
+        # Copy WebKitNetworkProcess
+        cp -r /usr/lib/x86_64-linux-gnu/webkit2gtk-4.0 ./shared/lib/
         # ADD LIBRARIES
         wget "$LIB4BN" -O ./lib4bin
         chmod +x ./lib4bin
         # xvfb-run -d -- ./lib4bin -p -v -r -e /usr/bin/prusa-slicer
         xvfb-run -- ./lib4bin -p -v -r -e /usr/bin/prusa-slicer
+        xvfb-run -- ./lib4bin -p -v -r -e /lib/webkit2gtk-4.0/WebKitNetworkProcess
         rm -f ./lib4bin
 
         find ./shared -type f -exec strip -s -R .comment --strip-unneeded {} ';'
