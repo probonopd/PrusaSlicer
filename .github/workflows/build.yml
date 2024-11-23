@@ -118,7 +118,7 @@ jobs:
 
         # find ./shared -type f -exec strip -s -R .comment --strip-unneeded {} ';'
 
-        # Copy WebKitNetworkProcess binaries and wrap them in sharun
+        # Copy WebKitNetworkProcess binaries and wrap them in sharun; FIXME: Automate
         mkdir -p ./shared/lib/webkit2gtk-4.0
         cp -r /usr/lib/x86_64-linux-gnu/webkit2gtk-4.0/* ./shared/bin/
         ( cd ./shared/lib/webkit2gtk-4.0
@@ -128,6 +128,10 @@ jobs:
         )
         find ./shared/lib -name 'libwebkit*' -exec sed -i 's|/usr|././|g' {} \;
         ln -s ./ ./shared/lib/x86_64-linux-gnu
+        mkdir -p lib/x86_64-linux-gnu/webkit2gtk-4.0/injected-bundle/
+        cd lib/x86_64-linux-gnu/webkit2gtk-4.0/injected-bundle/
+        ln -s ../../../../shared/bin/injected-bundle/libwebkit2gtkinjectedbundle.so .
+        cd -
         
         # Copy DRI and glvnd, FIXME: Should happen automatically and ther dependencies shoud also be deployed
         cp -L /usr/lib/x86_64-linux-gnu/{libGLX_indirect.so.0,libGLX_mesa.so.0,libxcb-dri2.so.0,libxcb-dri3.so.0,libxcb-glx.so.0,libxcb-present.so.0,libxcb-sync.so.1,libxcb-xfixes.so.0,libxshmfence.so.1,libXxf86vm.so.1} ./shared/lib/
