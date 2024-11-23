@@ -149,6 +149,7 @@ jobs:
         SHARUN_WORKING_DIR=${SHARUN_DIR}
         LIBGL_DRIVERS_PATH=${SHARUN_DIR}/shared/lib/dri
         GIO_MODULE_DIR=${SHARUN_DIR}/lib/x86_64-linux-gnu/gio/modules/
+        GSETTINGS_BACKEND=memory
         EOF
 
         # Copy additional libraries
