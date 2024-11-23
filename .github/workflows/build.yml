@@ -18,7 +18,7 @@ jobs:
     - name: 0. Prerequisities
       run: |
         sudo apt-get update
-        sudo apt-get install -y git build-essential autoconf cmake libglu1-mesa-dev libgtk-3-dev libdbus-1-dev libwebkit2gtk-4.0-dev desktop-file-utils
+        sudo apt-get install -y git build-essential autoconf cmake libglu1-mesa-dev libgtk-3-dev libdbus-1-dev libwebkit2gtk-4.0-dev desktop-file-utils libegl-mesa0
     - name: 1. Cloning the repository
       uses: actions/checkout@v4
     - name: ccache
@@ -134,7 +134,7 @@ jobs:
         cd -
         
         # Copy DRI and glvnd, FIXME: Should happen automatically and ther dependencies shoud also be deployed
-        cp -L /usr/lib/x86_64-linux-gnu/{libGLX_indirect.so.0,libGLX_mesa.so.0,libxcb-dri2.so.0,libxcb-dri3.so.0,libxcb-glx.so.0,libxcb-present.so.0,libxcb-sync.so.1,libxcb-xfixes.so.0,libxshmfence.so.1,libXxf86vm.so.1} ./shared/lib/
+        cp -L /usr/lib/x86_64-linux-gnu/{libGLX_indirect.so.0,libGLX_mesa.so.0,libxcb-dri2.so.0,libxcb-dri3.so.0,libxcb-glx.so.0,libxcb-present.so.0,libxcb-sync.so.1,libxcb-xfixes.so.0,libxshmfence.so.1,libXxf86vm.so.1,libEGL_mesa.so.0} ./shared/lib/
         cp -r /usr/share/glvnd   ./usr/share/
         cp -r /usr/lib/x86_64-linux-gnu/dri ./shared/lib/ # May need environment variable LIBGL_DRIVERS_PATH at runtime since '\$${ORIGIN}' in RPATH is wrong?
         cp $(ldd ./shared/lib/dri/*.so |cut -d ">" -f 2 | cut -d " " -f 2 | sort | uniq) ./shared/lib/ 2>/dev/null || true # FIXME: Deploy dependencies properly
