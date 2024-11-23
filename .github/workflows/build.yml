@@ -156,6 +156,7 @@ jobs:
         GSETTINGS_BACKEND=memory
         LOCPATH=${SHARUN_DIR}/lib/locale:${SHARUN_DIR}/share/locale
         EOF
+        # NOTE: sharun should already set GIO_MODULE_DIR automatically
 
         # Copy additional libraries
         # Prepare sharun
