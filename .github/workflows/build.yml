@@ -166,7 +166,6 @@ jobs:
         # Do we also need the __EGL_VENDOR_LIBRARY_DIRS environment variable?
 
         # NixOS does not have /usr/lib/locale, which PrusaSlicer expects
-        mkdir lib
         cp -r /usr/lib/locale ./lib/
         sed -i -e 's|/usr/lib/locale|././/lib/locale|g' ./bin/prusa-slicer # In case LOCPATH is not honored
 
