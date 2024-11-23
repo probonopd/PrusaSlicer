@@ -132,7 +132,11 @@ jobs:
         cd lib/x86_64-linux-gnu/webkit2gtk-4.0/injected-bundle/
         ln -s ../../../../shared/bin/injected-bundle/libwebkit2gtkinjectedbundle.so .
         cd -
-        
+        # Try to fix "TSL/SSL support not available"
+        mkdir -p ./lib/x86_64-linux-gnu/gio
+        cp -r /usr/lib/x86_64-linux-gnu/gio/modules ./lib/x86_64-linux-gnu/gio/
+        cp $(ldd ./lib/x86_64-linux-gnu/gio/modules/*.so |cut -d ">" -f 2 | cut -d " " -f 2 | sort | uniq) ./shared/lib/ 2>/dev/null || true # FIXME: Deploy dependencies properly
+
         # Copy DRI and glvnd, FIXME: Should happen automatically and ther dependencies shoud also be deployed
         cp -L /usr/lib/x86_64-linux-gnu/{libGLX_indirect.so.0,libGLX_mesa.so.0,libxcb-dri2.so.0,libxcb-dri3.so.0,libxcb-glx.so.0,libxcb-present.so.0,libxcb-sync.so.1,libxcb-xfixes.so.0,libxshmfence.so.1,libXxf86vm.so.1,libEGL_mesa.so.0} ./shared/lib/
         cp -r /usr/share/glvnd   ./usr/share/
@@ -144,6 +148,7 @@ jobs:
         cat > .env <<\EOF
         SHARUN_WORKING_DIR=${SHARUN_DIR}
         LIBGL_DRIVERS_PATH=${SHARUN_DIR}/shared/lib/dri
+        GIO_MODULE_DIR=${SHARUN_DIR}/lib/x86_64-linux-gnu/gio/modules/
         EOF
 
         # Copy additional libraries
