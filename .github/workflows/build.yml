@@ -178,3 +178,8 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         path: '**/*.AppImage'
+    - name: 6. Upload to GitHub Releases
+      run: |
+        readlink -f .
+        wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
+        bash upload.sh *.AppImage*
