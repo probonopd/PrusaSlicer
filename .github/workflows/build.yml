@@ -119,6 +119,7 @@ jobs:
         # find ./shared -type f -exec strip -s -R .comment --strip-unneeded {} ';'
 
         # Copy WebKitNetworkProcess binaries and wrap them in sharun
+        mkdir -p ./shared/lib/webkit2gtk-4.0
         cp -r /usr/lib/x86_64-linux-gnu/webkit2gtk-4.0/* ./shared/bin/
         ( cd ./shared/lib/webkit2gtk-4.0
           ln -s ../../../sharun ./WebKitWebProcess
