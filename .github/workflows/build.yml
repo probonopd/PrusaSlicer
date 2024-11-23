@@ -120,6 +120,7 @@ jobs:
         rm -f ./lib4bin
 
         # find ./shared -type f -exec strip -s -R .comment --strip-unneeded {} ';'
+        find ./shared -type f -exec strip {} \; || true
 
         # Copy WebKitNetworkProcess binaries and wrap them in sharun; FIXME: Automate
         mkdir -p ./shared/lib/webkit2gtk-4.0
