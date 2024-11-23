@@ -154,7 +154,7 @@ jobs:
         LIBGL_DRIVERS_PATH=${SHARUN_DIR}/shared/lib/dri
         GIO_MODULE_DIR=${SHARUN_DIR}/lib/x86_64-linux-gnu/gio/modules/
         GSETTINGS_BACKEND=memory
-        LOCPATH=${SHARUN_DIR}/lib/locale:${SHARUN_DIR}/share/locale-langpack
+        LOCPATH=${SHARUN_DIR}/lib/locale:${SHARUN_DIR}/share/locale
         EOF
 
         # Copy additional libraries
@@ -170,8 +170,8 @@ jobs:
         cp -r /usr/lib/locale ./lib/
         sed -i -e 's|/usr/lib/locale|././/lib/locale|g' ./bin/prusa-slicer # In case LOCPATH is not honored
         mkdir -p ./share
-        cp -r /usr/share/locale-langpack ./share/
-        sed -i -e 's|/usr/share/locale-langpack|././/share/locale-langpack|g' ./shared/lib/libc.so.6 # In case LOCPATH is not honored
+        cp -r /usr/share/locale ./share/
+        sed -i -e 's|/usr/share/locale|././/share/locale|g' ./shared/lib/libc.so.6 # In case LOCPATH is not honored
 
         # MAKE APPIMAGE WITH STATIC RUNTIME
         cd ..
