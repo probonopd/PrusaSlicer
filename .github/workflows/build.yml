@@ -1,3 +1,10 @@
+# Credits:
+# teachingtechY for PrusaSlicer GitHub build action
+# Samueru-sama for finding solutions to bundle this using lib4bin and sharun
+# VHSgunzo for sharun
+# xplshn for helpful hints
+# and everyone else involved in this
+
 name: build
 
 on:
@@ -101,8 +108,6 @@ jobs:
         find ./shared/lib -type f -regex '.*gdk.*loaders.cache' \
         	-exec sed -i 's|/.*lib.*/gdk-pixbuf.*/.*/loaders/||g' {} \;
 
-        # Copy WebKitNetworkProcess
-        cp -r /usr/lib/x86_64-linux-gnu/webkit2gtk-4.0 ./shared/lib/
         # ADD LIBRARIES
         wget "$LIB4BN" -O ./lib4bin
         chmod +x ./lib4bin
@@ -113,11 +118,30 @@ jobs:
 
         # find ./shared -type f -exec strip -s -R .comment --strip-unneeded {} ';'
 
+        # Copy WebKitNetworkProcess binaries and wrap them in sharun
+        cp -r /usr/lib/x86_64-linux-gnu/webkit2gtk-4.0/* ./shared/bin/
+        ( cd ./shared/lib/webkit2gtk-4.0
+          ln -s ../../../sharun ./WebKitWebProcess
+          ln -s ../../../sharun ./WebKitNetworkProcess
+          ln -s ../../../sharun ./MiniBrowser
+        )
+        find ./shared/lib -name 'libwebkit*' -exec sed -i 's|/usr|././|g' {} \;
+        ln -s ./ ./shared/lib/x86_64-linux-gnu
+        
         # Copy DRI and glvnd
         cp -r /lib/x86_64-linux-gnu/libxcb-dri3.so.0 ./shared/lib/ # Otherwise it will try to load it from the system
         cp -r /usr/share/glvnd   ./usr/share/
         cp -r /usr/lib/x86_64-linux-gnu/dri ./shared/lib/ # May need environment variable LIBGL_DRIVERS_PATH at runtime since '\$${ORIGIN}' in RPATH is wrong?
         cp $(ldd ./shared/lib/dri/*.so |cut -d ">" -f 2 | cut -d " " -f 2 | sort | uniq) ./shared/lib/ 2>/dev/null || true # FIXME: Deploy dependencies properly
+
+        # Create environment
+        cat > .env <<\EOF
+        SHARUN_WORKING_DIR=${SHARUN_DIR}
+        LIBGL_DRIVERS_PATH=${SHARUN_DIR}/shared/lib/dri
+        EOF
+
+        # Copy additional libraries, FIXME: Should happen automatically and ther dependencies shoud also be deployed
+        sudo cp /usr/lib/x86_64-linux-gnu/{libGLX_indirect.so.0,libGLX_mesa.so.0,libxcb-dri2.so.0,libxcb-dri3.so.0,libxcb-glx.so.0,libxcb-present.so.0,libxcb-sync.so.1,libxcb-xfixes.so.0,libxshmfence.so.1,libXxf86vm.so.1} lib
 
         # Prepare sharun
         wget -c https://github.com/VHSgunzo/sharun/releases/download/v0.1.8/sharun-x86_64-upx -O ./sharun || true
