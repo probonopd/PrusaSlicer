@@ -153,6 +153,7 @@ jobs:
         LIBGL_DRIVERS_PATH=${SHARUN_DIR}/shared/lib/dri
         GIO_MODULE_DIR=${SHARUN_DIR}/lib/x86_64-linux-gnu/gio/modules/
         GSETTINGS_BACKEND=memory
+        LOCPATH=${SHARUN_DIR}/lib/locale
         EOF
 
         # Copy additional libraries
@@ -163,6 +164,11 @@ jobs:
         ./sharun -g || true # FIXME
 
         # Do we also need the __EGL_VENDOR_LIBRARY_DIRS environment variable?
+
+        # NixOS does not have /usr/lib/locale, which PrusaSlicer expects
+        mkdir lib
+        cp -r /usr/lib/locale ./lib/
+        sed -i -e 's|/usr/lib/locale|././/lib/locale|g' ./bin/prusa-slicer # In case LOCPATH is not honored
 
         # MAKE APPIMAGE WITH STATIC RUNTIME
         cd ..
