@@ -143,7 +143,7 @@ jobs:
 
         # Copy DRI and glvnd, FIXME: Should happen automatically and ther dependencies shoud also be deployed
         cp -L /usr/lib/x86_64-linux-gnu/{libGLX_indirect.so.0,libGLX_mesa.so.0,libxcb-dri2.so.0,libxcb-dri3.so.0,libxcb-glx.so.0,libxcb-present.so.0,libxcb-sync.so.1,libxcb-xfixes.so.0,libxshmfence.so.1,libXxf86vm.so.1,libEGL_mesa.so.0} ./shared/lib/
-        cp -r /usr/share/glvnd   ./usr/share/
+        cp -r /usr/share/glvnd   ./usr/share/ # FIXME: Shouldn't it be ./share/?
         cp -r /usr/lib/x86_64-linux-gnu/dri ./shared/lib/ # May need environment variable LIBGL_DRIVERS_PATH at runtime since '\$${ORIGIN}' in RPATH is wrong?
         cp $(ldd ./shared/lib/dri/*.so |cut -d ">" -f 2 | cut -d " " -f 2 | sort | uniq) ./shared/lib/ 2>/dev/null || true # FIXME: Deploy dependencies properly
         cp $(ldd ./shared/lib/*.so |cut -d ">" -f 2 | cut -d " " -f 2 | sort | uniq) ./shared/lib/ 2>/dev/null || true # FIXME: Deploy dependencies properly
@@ -154,7 +154,7 @@ jobs:
         LIBGL_DRIVERS_PATH=${SHARUN_DIR}/shared/lib/dri
         GIO_MODULE_DIR=${SHARUN_DIR}/lib/x86_64-linux-gnu/gio/modules/
         GSETTINGS_BACKEND=memory
-        LOCPATH=${SHARUN_DIR}/lib/locale
+        LOCPATH=${SHARUN_DIR}/lib/locale:${SHARUN_DIR}/share/locale-langpack
         EOF
 
         # Copy additional libraries
@@ -169,6 +169,9 @@ jobs:
         # NixOS does not have /usr/lib/locale, which PrusaSlicer expects
         cp -r /usr/lib/locale ./lib/
         sed -i -e 's|/usr/lib/locale|././/lib/locale|g' ./bin/prusa-slicer # In case LOCPATH is not honored
+        mkdir -p ./share
+        cp -r /usr/share/locale-langpack ./share/
+        sed -i -e 's|/usr/share/locale-langpack|././/share/locale-langpack|g' ./shared/lib/libc.so.6 # In case LOCPATH is not honored
 
         # MAKE APPIMAGE WITH STATIC RUNTIME
         cd ..
