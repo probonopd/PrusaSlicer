@@ -169,10 +169,11 @@ jobs:
 
         # NixOS does not have /usr/lib/locale nor /usr/share/locale, which PrusaSlicer expects
         cp -r /usr/lib/locale ./lib/
-        sed -i -e 's|/usr/lib/locale|././/lib/locale|g' ./bin/prusa-slicer # In case LOCPATH is not honored
+        sed -i -e 's|/usr/lib/locale|././/lib/locale|g' ./bin/prusa-slicer # Since we cannot get LOCPATH to work properly
         mkdir -p ./share
         cp -r /usr/share/locale ./share/
-        sed -i -e 's|/usr/share/locale|././/share/locale|g' ./shared/lib/libc.so.6 # In case LOCPATH is not honored
+        sed -i -e 's|/usr/share/locale|././/share/locale|g' ./shared/lib/libc.so.6 # Since we cannot get LOCPATH to work properly
+        sed -i -e 's|/usr/lib/locale|././/lib/locale|g' ./shared/lib/libc.so.6  # Since we cannot get LOCPATH to work properly
 
         # MAKE APPIMAGE WITH STATIC RUNTIME
         cd ..
