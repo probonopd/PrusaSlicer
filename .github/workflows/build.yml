@@ -3,7 +3,7 @@
 # Samueru-sama for finding solutions to bundle this using lib4bin and sharun
 # VHSgunzo for sharun
 # xplshn for helpful hints
-# TheAssassin for testing and ideas
+# TheAssassin for improving the runtime
 # and everyone else involved in this
 
 name: build
@@ -184,11 +184,6 @@ jobs:
         cd ..
         wget -q "$APPIMAGETOOL" -O ./appimagetool
         chmod +x ./appimagetool
-
-        # Temporarily use a runtime from https://github.com/AppImage/type2-runtime/pull/82
-        # TODO: Remove --runtime-file=runtime-x86_64 once upstreamed
-        wget -q https://github.com/user-attachments/files/17894125/artifacts.x86_64.zip
-        unzip artifacts.x86_64.zip 'runtime-*'
 
         ./appimagetool \
           --runtime-file=runtime-x86_64 \
