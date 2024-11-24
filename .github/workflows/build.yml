@@ -186,7 +186,6 @@ jobs:
         chmod +x ./appimagetool
 
         ./appimagetool \
-          --runtime-file=runtime-x86_64 \
           --comp zstd \
           --mksquashfs-opt -Xcompression-level --mksquashfs-opt 22 \
           -n -u "$UPINFO" "$PWD"/AppDir "$PWD"/"$PACKAGE"-"$VERSION"-"$ARCH".AppImage
