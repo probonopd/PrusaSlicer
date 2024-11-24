@@ -180,7 +180,14 @@ jobs:
         wget -q "$APPIMAGETOOL" -O ./appimagetool
         chmod +x ./appimagetool
 
-        ./appimagetool --comp zstd \
+        # Temporarily use a runtime from https://github.com/AppImage/type2-runtime/pull/82
+        # TODO: Remove --runtime-file=runtime-x86_64 once upstreamed
+        wget -q https://github.com/user-attachments/files/17892849/artifacts.zip
+        unzip artifacts.zip 'runtime-*'
+
+        ./appimagetool \
+          --runtime-file=runtime-x86_64 \
+          --comp zstd \
           --mksquashfs-opt -Xcompression-level --mksquashfs-opt 22 \
           -n -u "$UPINFO" "$PWD"/AppDir "$PWD"/"$PACKAGE"-"$VERSION"-"$ARCH".AppImage
 
