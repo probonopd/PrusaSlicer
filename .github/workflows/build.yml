@@ -183,7 +183,7 @@ jobs:
 
         # Temporarily use a runtime from https://github.com/AppImage/type2-runtime/pull/82
         # TODO: Remove --runtime-file=runtime-x86_64 once upstreamed
-        wget -q https://github.com/user-attachments/files/17892849/artifacts.zip
+        wget -q https://github.com/user-attachments/files/17893074/artifacts.zip
         unzip artifacts.zip 'runtime-*'
 
         ./appimagetool \
