@@ -22,7 +22,7 @@ jobs:
     - name: 0. Prerequisities
       run: |
         sudo apt-get update
-        sudo apt-get install -y git build-essential autoconf cmake libglu1-mesa-dev libgtk-3-dev libdbus-1-dev libwebkit2gtk-4.0-dev desktop-file-utils libegl-mesa0
+        sudo apt-get install -y locales-all git build-essential autoconf cmake libglu1-mesa-dev libgtk-3-dev libdbus-1-dev libwebkit2gtk-4.0-dev desktop-file-utils libegl-mesa0
     - name: 1. Cloning the repository
       uses: actions/checkout@v4
     - name: ccache
