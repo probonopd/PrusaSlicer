@@ -114,6 +114,7 @@ jobs:
         	-exec sed -i 's|/.*lib.*/gdk-pixbuf.*/.*/loaders/||g' {} \;
 
         # ADD LIBRARIES
+        rm ./lib4bin || true
         wget "$LIB4BN" -O ./lib4bin
         chmod +x ./lib4bin
         # xvfb-run -d -- ./lib4bin -p -v -r -e /usr/bin/prusa-slicer
@@ -162,6 +163,7 @@ jobs:
 
         # Copy additional libraries
         # Prepare sharun
+        rm sharun || true
         wget -c https://github.com/VHSgunzo/sharun/releases/download/v0.1.8/sharun-x86_64-upx -O ./sharun || true
         chmod +x ./sharun
         ln ./sharun ./AppRun
@@ -183,6 +185,7 @@ jobs:
 
         # MAKE APPIMAGE WITH STATIC RUNTIME
         cd ..
+        rm ./appimagetool || true
         wget -q "$APPIMAGETOOL" -O ./appimagetool
         chmod +x ./appimagetool
 
