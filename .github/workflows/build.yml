@@ -23,6 +23,7 @@ jobs:
     - name: 0. Prerequisities
       run: |
         sudo apt-get update
+        # locales-all is needed, otherwise it will crash with LANG=ro_RO.UTF-8
         sudo apt-get install -y locales-all git build-essential autoconf cmake libglu1-mesa-dev libgtk-3-dev libdbus-1-dev libwebkit2gtk-4.0-dev desktop-file-utils libegl-mesa0
     - name: 1. Cloning the repository
       uses: actions/checkout@v4
@@ -189,7 +190,7 @@ jobs:
         wget -q "$APPIMAGETOOL" -O ./appimagetool
         chmod +x ./appimagetool
 
-        # FIXME: Remove the need for running appimagetool as root
+        # FIXME: Remove the need for running appimagetool as root; https://github.com/AppImage/appimagetool/issues/82
         unset APPIMAGE_EXTRACT_AND_RUN
         sudo -E ./appimagetool \
           --comp zstd \
