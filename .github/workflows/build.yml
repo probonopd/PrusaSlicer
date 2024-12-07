@@ -190,10 +190,14 @@ jobs:
         wget -q "$APPIMAGETOOL" -O ./appimagetool
         chmod +x ./appimagetool
 
+        # FIXME: Remove the need to manually download the runtime
+        rm runtime* || true
+        wget -q "$https://github.com/AppImage/type2-runtime/releases/download/continuous/runtime-x86_64"
+
         ./appimagetool \
           --comp zstd \
           --mksquashfs-opt -Xcompression-level --mksquashfs-opt 22 \
-          -n -u "$UPINFO" "$PWD"/AppDir "$PWD"/"$PACKAGE"-"$VERSION"-"$ARCH".AppImage
+          -n -u "$UPINFO" "$PWD"/AppDir "$PWD"/"$PACKAGE"-"$VERSION"-"$ARCH".AppImage  --runtime-file=runtime-x86_64
 
         mv ./*.AppImage* ../
         cd ..
