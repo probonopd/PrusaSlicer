@@ -190,9 +190,7 @@ jobs:
         wget -q "$APPIMAGETOOL" -O ./appimagetool
         chmod +x ./appimagetool
 
-        # FIXME: Remove the need for running appimagetool as root; https://github.com/AppImage/appimagetool/issues/82
-        unset APPIMAGE_EXTRACT_AND_RUN
-        sudo -E ./appimagetool \
+        ./appimagetool \
           --comp zstd \
           --mksquashfs-opt -Xcompression-level --mksquashfs-opt 22 \
           -n -u "$UPINFO" "$PWD"/AppDir "$PWD"/"$PACKAGE"-"$VERSION"-"$ARCH".AppImage
