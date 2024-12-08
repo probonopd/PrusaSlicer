@@ -194,6 +194,7 @@ jobs:
         rm runtime* || true
         wget -q "https://github.com/user-attachments/files/18053372/runtime-x86_64.zip"
         unzip runtime-x86_64.zip
+        chmod +x ./runtime-x86_64
         
         TARGET_APPIMAGE=./appimagetool ./runtime-x86_64 \
           --comp zstd \
