@@ -195,7 +195,7 @@ jobs:
         wget -q "https://github.com/user-attachments/files/18053372/runtime-x86_64.zip"
         unzip runtime-x86_64.zip
         
-        ./appimagetool \
+        TARGET_APPIMAGE=./appimagetool ./runtime-x86_64 \
           --comp zstd \
           --mksquashfs-opt -Xcompression-level --mksquashfs-opt 22 \
           -n -u "$UPINFO" "$PWD"/AppDir "$PWD"/"$PACKAGE"-"$VERSION"-"$ARCH".AppImage --runtime-file=runtime-x86_64
