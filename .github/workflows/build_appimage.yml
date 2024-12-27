@@ -158,6 +158,8 @@ jobs:
         LIBGL_DRIVERS_PATH=${SHARUN_DIR}/shared/lib/dri
         GIO_MODULE_DIR=${SHARUN_DIR}/lib/x86_64-linux-gnu/gio/modules/
         GSETTINGS_BACKEND=memory
+        unset LD_LIBRARY_PATH
+        unset LD_PRELOAD
         EOF
         # NOTE: sharun should already set GIO_MODULE_DIR automatically
         # LOCPATH=${SHARUN_DIR}/lib/locale:${SHARUN_DIR}/share/locale # This makes PrusaSlicer fail
