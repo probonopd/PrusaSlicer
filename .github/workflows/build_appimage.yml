@@ -24,7 +24,7 @@ jobs:
       run: |
         sudo apt-get update
         # locales-all is needed, otherwise it will crash with LANG=ro_RO.UTF-8
-        sudo apt-get install -y locales-all git build-essential autoconf cmake libglu1-mesa-dev libgtk-3-dev libdbus-1-dev libwebkit2gtk-4.0-dev desktop-file-utils libegl-mesa0
+        sudo apt-get install -y locales-all git build-essential autoconf cmake libglu1-mesa-dev libgtk-3-dev libdbus-1-dev libwebkit2gtk-4.0-dev desktop-file-utils libegl-mesa0 libnss-mdns
     - name: 1. Cloning the repository
       uses: actions/checkout@v4
     - name: ccache
@@ -123,6 +123,7 @@ jobs:
         # xvfb-run -- ./lib4bin -p -v -r -e /lib/webkit2gtk-4.0/WebKitNetworkProcess # FIXME: xvfb-run: error: Xvfb failed to start
         rm -f ./lib4bin
         find /usr/bin /usr/lib -type f -name 'OCCTWrapper.so' -exec cp -vn {} ./bin \;
+        find /usr/lib -type f -name '*libnss*.so*' -exec cp -vn {} ./shared/lib \;
 
         # find ./shared -type f -exec strip -s -R .comment --strip-unneeded {} ';'
         find ./shared -type f -exec strip {} \; || true
