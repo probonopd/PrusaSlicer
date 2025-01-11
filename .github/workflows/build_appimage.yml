@@ -17,14 +17,14 @@ env:
 
 jobs:
   linux:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 180
     steps:
     - name: 0. Prerequisities
       run: |
         sudo apt-get update
         # locales-all is needed, otherwise it will crash with LANG=ro_RO.UTF-8
-        sudo apt-get install -y locales-all git build-essential autoconf cmake libglu1-mesa-dev libgtk-3-dev libdbus-1-dev libwebkit2gtk-4.0-dev desktop-file-utils libegl-mesa0 libnss-mdns
+        sudo apt-get install -y locales-all git build-essential autoconf cmake libglu1-mesa-dev libgtk-3-dev libdbus-1-dev libwebkit2gtk-4.1-dev desktop-file-utils libegl-mesa0 libnss-mdns
     - name: 1. Cloning the repository
       uses: actions/checkout@v4
     - name: ccache
@@ -120,7 +120,7 @@ jobs:
         chmod +x ./lib4bin
         # xvfb-run -d -- ./lib4bin -p -v -r -e /usr/bin/prusa-slicer
         xvfb-run -- ./lib4bin -p -v -r -e /usr/bin/prusa-slicer
-        # xvfb-run -- ./lib4bin -p -v -r -e /lib/webkit2gtk-4.0/WebKitNetworkProcess # FIXME: xvfb-run: error: Xvfb failed to start
+        # xvfb-run -- ./lib4bin -p -v -r -e /lib/webkit2gtk-4.1/WebKitNetworkProcess # FIXME: xvfb-run: error: Xvfb failed to start
         rm -f ./lib4bin
         find /usr/bin /usr/lib -type f -name 'OCCTWrapper.so' -exec cp -vn {} ./bin \;
         find /usr/lib -type f -name '*libnss*.so*' -exec cp -vn {} ./shared/lib \;
@@ -129,17 +129,17 @@ jobs:
         find ./shared -type f -exec strip {} \; || true
 
         # Copy WebKitNetworkProcess binaries and wrap them in sharun; FIXME: Automate
-        mkdir -p ./shared/lib/webkit2gtk-4.0
-        cp -r /usr/lib/x86_64-linux-gnu/webkit2gtk-4.0/* ./shared/bin/
-        ( cd ./shared/lib/webkit2gtk-4.0
+        mkdir -p ./shared/lib/webkit2gtk-4.1
+        cp -r /usr/lib/x86_64-linux-gnu/webkit2gtk-4.1/* ./shared/bin/
+        ( cd ./shared/lib/webkit2gtk-4.1
           ln -s ../../../sharun ./WebKitWebProcess
           ln -s ../../../sharun ./WebKitNetworkProcess
           ln -s ../../../sharun ./MiniBrowser
         )
         find ./shared/lib -name 'libwebkit*' -exec sed -i 's|/usr|././|g' {} \;
         ln -s ./ ./shared/lib/x86_64-linux-gnu
-        mkdir -p lib/x86_64-linux-gnu/webkit2gtk-4.0/injected-bundle/
-        cd lib/x86_64-linux-gnu/webkit2gtk-4.0/injected-bundle/
+        mkdir -p lib/x86_64-linux-gnu/webkit2gtk-4.1/injected-bundle/
+        cd lib/x86_64-linux-gnu/webkit2gtk-4.1/injected-bundle/
         ln -s ../../../../shared/bin/injected-bundle/libwebkit2gtkinjectedbundle.so .
         cd -
         # Try to fix "TSL/SSL support not available"
