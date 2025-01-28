@@ -2,8 +2,6 @@ name: Run static analysis
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 0 * * *"
 
 jobs:
   static_analysis_master:
