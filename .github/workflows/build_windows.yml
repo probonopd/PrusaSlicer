@@ -1,7 +1,6 @@
 name: Build windows
 
 on:
-  push:
   workflow_dispatch:
     inputs:
       create_pdb:
