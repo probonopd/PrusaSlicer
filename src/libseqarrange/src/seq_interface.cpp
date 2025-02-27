@@ -86,6 +86,7 @@ bool PrinterGeometry::convert_Geometry2PlateBounds(Slic3r::BoundingBox &plate_bo
 	    plate_bounding_polygon.points.insert(plate_bounding_polygon.points.begin() + i, Point(plate.points[i].x() / SEQ_SLICER_SCALE_FACTOR,
 												  plate.points[i].y() / SEQ_SLICER_SCALE_FACTOR));
 	}
+	plate_bounding_polygon.make_counter_clockwise();    	
 	return false;
     }
     else

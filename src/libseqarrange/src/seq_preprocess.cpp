@@ -742,7 +742,7 @@ void prepare_ExtruderPolygons(const SolverConfiguration                  &solver
 	    }
 	    else
 	    {
-		throw InternalErrorException("MISMATCH BETWEEN OBJECT AND PRINTER SLICE HEIGHTS.");
+		throw std::runtime_error("MISMATCH BETWEEN OBJECT AND PRINTER SLICE HEIGHTS.");
 	    }
 	}
     }
